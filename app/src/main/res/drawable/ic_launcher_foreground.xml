@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- "VM" text as icon foreground -->
+    <group
+        android:translateX="16"
+        android:translateY="24">
+        <!-- V letter -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M10,20 L22,50 L34,20 L28,20 L22,38 L16,20 Z" />
+        <!-- M letter -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M40,20 L40,50 L46,50 L46,30 L54,44 L62,30 L62,50 L68,50 L68,20 L62,20 L54,36 L46,20 Z" />
+    </group>
+    <!-- Small circuit-like decorative lines -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeColor="#FFFFFF"
+        android:pathData="M20,70 L88,70"
+        android:fillType="nonZero" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeWidth="1"
+        android:strokeColor="#FFFFFF"
+        android:pathData="M30,76 L78,76" />
+</vector>

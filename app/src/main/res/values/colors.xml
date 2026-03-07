@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#FF6366F1</color>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="primary_container">#FFE0E0FF</color>
+    <color name="on_primary_container">#FF1A1A5E</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="on_surface">#FF1A1B2E</color>
+    <color name="surface_variant">#FFF1F0FF</color>
+    <color name="on_surface_variant">#FF5C5C7A</color>
+    <color name="error">#FFEF4444</color>
+    <color name="on_error">#FFFFFFFF</color>
+    <color name="ic_launcher_background">#FF6366F1</color>
+</resources>

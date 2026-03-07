@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions for virtual engine operation -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- C2DM/FCM receive permission for virtual app push notifications -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:name=".NextVmApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="NEXTVM"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NEXTVM"
+        android:requestLegacyExternalStorage="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="35">
+
+        <!-- GMS version (required by Google Play Services libraries) -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="243431006" />
+
+        <!-- === MAIN ACTIVITY === -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NEXTVM">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- === VIRTUAL ENGINE SERVICE === -->
+        <service
+            android:name="com.nextvm.core.virtualization.engine.VirtualEngineService"
+            android:process=":x"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+        <!-- === FCM / PUSH NOTIFICATION SERVICES === -->
+        <!-- Receives Firebase MESSAGING_EVENT intents from host GMS and routes
+             them to the correct virtual app instance via GmsFcmProxy -->
+        <service
+            android:name=".fcm.NextVmFcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Legacy C2DM broadcast receiver — catches FCM messages delivered as
+             com.google.android.c2dm.intent.RECEIVE broadcasts from host GMS -->
+        <receiver
+            android:name=".fcm.NextVmC2dmReceiver"
+            android:exported="false"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- =================================================================== -->
+        <!-- PROCESS SLOT 0 (:p0)                                                -->
+        <!-- =================================================================== -->
+
+        <!-- Standard Activities -->
+        <activity android:name=".stub.P0$Standard00" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$Standard01" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$Standard02" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$Standard03" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.s03" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$Standard04" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.s04" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- SingleTop Activities -->
+        <activity android:name=".stub.P0$SingleTop00" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$SingleTop01" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.st01" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- SingleTask Activities -->
+        <activity android:name=".stub.P0$SingleTask00" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P0$SingleTask01" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.stk01" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- SingleInstance Activity -->
+        <activity android:name=".stub.P0$SingleInstance00" android:process=":p0" android:exported="false" android:taskAffinity="com.nextvm.vt.p0.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- Services -->
+        <service android:name=".stub.P0$S00" android:process=":p0" android:exported="false" />
+        <service android:name=".stub.P0$S01" android:process=":p0" android:exported="false" />
+        <service android:name=".stub.P0$S02" android:process=":p0" android:exported="false" />
+        <service android:name=".stub.P0$S03" android:process=":p0" android:exported="false" />
+        <service android:name=".stub.P0$S04" android:process=":p0" android:exported="false" />
+        <!-- ContentProviders -->
+        <provider android:name=".stub.P0$CP00" android:process=":p0" android:exported="false" android:authorities="com.nextvm.vt.p0.cp00" />
+        <provider android:name=".stub.P0$CP01" android:process=":p0" android:exported="false" android:authorities="com.nextvm.vt.p0.cp01" />
+        <provider android:name=".stub.P0$CP02" android:process=":p0" android:exported="false" android:authorities="com.nextvm.vt.p0.cp02" />
+        <!-- BroadcastReceivers -->
+        <receiver android:name=".stub.P0$R00" android:process=":p0" android:exported="false" />
+        <receiver android:name=".stub.P0$R01" android:process=":p0" android:exported="false" />
+
+        <!-- =================================================================== -->
+        <!-- PROCESS SLOT 1 (:p1)                                                -->
+        <!-- =================================================================== -->
+        <activity android:name=".stub.P1$Standard00" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$Standard01" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$Standard02" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$Standard03" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.s03" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$Standard04" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.s04" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$SingleTop00" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$SingleTop01" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.st01" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$SingleTask00" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$SingleTask01" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.stk01" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P1$SingleInstance00" android:process=":p1" android:exported="false" android:taskAffinity="com.nextvm.vt.p1.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P1$S00" android:process=":p1" android:exported="false" />
+        <service android:name=".stub.P1$S01" android:process=":p1" android:exported="false" />
+        <service android:name=".stub.P1$S02" android:process=":p1" android:exported="false" />
+        <service android:name=".stub.P1$S03" android:process=":p1" android:exported="false" />
+        <service android:name=".stub.P1$S04" android:process=":p1" android:exported="false" />
+        <provider android:name=".stub.P1$CP00" android:process=":p1" android:exported="false" android:authorities="com.nextvm.vt.p1.cp00" />
+        <provider android:name=".stub.P1$CP01" android:process=":p1" android:exported="false" android:authorities="com.nextvm.vt.p1.cp01" />
+        <provider android:name=".stub.P1$CP02" android:process=":p1" android:exported="false" android:authorities="com.nextvm.vt.p1.cp02" />
+        <receiver android:name=".stub.P1$R00" android:process=":p1" android:exported="false" />
+        <receiver android:name=".stub.P1$R01" android:process=":p1" android:exported="false" />
+
+        <!-- =================================================================== -->
+        <!-- PROCESS SLOT 2 (:p2)                                                -->
+        <!-- =================================================================== -->
+        <activity android:name=".stub.P2$Standard00" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$Standard01" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$Standard02" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$Standard03" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.s03" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$Standard04" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.s04" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$SingleTop00" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$SingleTop01" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.st01" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$SingleTask00" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$SingleTask01" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.stk01" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P2$SingleInstance00" android:process=":p2" android:exported="false" android:taskAffinity="com.nextvm.vt.p2.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P2$S00" android:process=":p2" android:exported="false" />
+        <service android:name=".stub.P2$S01" android:process=":p2" android:exported="false" />
+        <service android:name=".stub.P2$S02" android:process=":p2" android:exported="false" />
+        <service android:name=".stub.P2$S03" android:process=":p2" android:exported="false" />
+        <service android:name=".stub.P2$S04" android:process=":p2" android:exported="false" />
+        <provider android:name=".stub.P2$CP00" android:process=":p2" android:exported="false" android:authorities="com.nextvm.vt.p2.cp00" />
+        <provider android:name=".stub.P2$CP01" android:process=":p2" android:exported="false" android:authorities="com.nextvm.vt.p2.cp01" />
+        <provider android:name=".stub.P2$CP02" android:process=":p2" android:exported="false" android:authorities="com.nextvm.vt.p2.cp02" />
+        <receiver android:name=".stub.P2$R00" android:process=":p2" android:exported="false" />
+        <receiver android:name=".stub.P2$R01" android:process=":p2" android:exported="false" />
+
+        <!-- =================================================================== -->
+        <!-- PROCESS SLOTS 3-9 follow the same pattern                            -->
+        <!-- =================================================================== -->
+
+        <!-- SLOT 3 -->
+        <activity android:name=".stub.P3$Standard00" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$Standard01" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$Standard02" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$Standard03" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.s03" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$Standard04" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.s04" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$SingleTop00" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$SingleTop01" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.st01" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$SingleTask00" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$SingleTask01" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.stk01" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P3$SingleInstance00" android:process=":p3" android:exported="false" android:taskAffinity="com.nextvm.vt.p3.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P3$S00" android:process=":p3" android:exported="false" />
+        <service android:name=".stub.P3$S01" android:process=":p3" android:exported="false" />
+        <service android:name=".stub.P3$S02" android:process=":p3" android:exported="false" />
+        <service android:name=".stub.P3$S03" android:process=":p3" android:exported="false" />
+        <service android:name=".stub.P3$S04" android:process=":p3" android:exported="false" />
+        <provider android:name=".stub.P3$CP00" android:process=":p3" android:exported="false" android:authorities="com.nextvm.vt.p3.cp00" />
+        <provider android:name=".stub.P3$CP01" android:process=":p3" android:exported="false" android:authorities="com.nextvm.vt.p3.cp01" />
+        <provider android:name=".stub.P3$CP02" android:process=":p3" android:exported="false" android:authorities="com.nextvm.vt.p3.cp02" />
+        <receiver android:name=".stub.P3$R00" android:process=":p3" android:exported="false" />
+        <receiver android:name=".stub.P3$R01" android:process=":p3" android:exported="false" />
+
+        <!-- SLOT 4 -->
+        <activity android:name=".stub.P4$Standard00" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$Standard01" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$Standard02" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$Standard03" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.s03" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$Standard04" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.s04" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$SingleTop00" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$SingleTop01" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.st01" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$SingleTask00" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$SingleTask01" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.stk01" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P4$SingleInstance00" android:process=":p4" android:exported="false" android:taskAffinity="com.nextvm.vt.p4.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P4$S00" android:process=":p4" android:exported="false" />
+        <service android:name=".stub.P4$S01" android:process=":p4" android:exported="false" />
+        <service android:name=".stub.P4$S02" android:process=":p4" android:exported="false" />
+        <service android:name=".stub.P4$S03" android:process=":p4" android:exported="false" />
+        <service android:name=".stub.P4$S04" android:process=":p4" android:exported="false" />
+        <provider android:name=".stub.P4$CP00" android:process=":p4" android:exported="false" android:authorities="com.nextvm.vt.p4.cp00" />
+        <provider android:name=".stub.P4$CP01" android:process=":p4" android:exported="false" android:authorities="com.nextvm.vt.p4.cp01" />
+        <provider android:name=".stub.P4$CP02" android:process=":p4" android:exported="false" android:authorities="com.nextvm.vt.p4.cp02" />
+        <receiver android:name=".stub.P4$R00" android:process=":p4" android:exported="false" />
+        <receiver android:name=".stub.P4$R01" android:process=":p4" android:exported="false" />
+
+        <!-- SLOTS 5-9: Same pattern, abbreviated for maintainability -->
+        <!-- SLOT 5 -->
+        <activity android:name=".stub.P5$Standard00" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P5$Standard01" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P5$Standard02" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P5$SingleTop00" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P5$SingleTask00" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P5$SingleInstance00" android:process=":p5" android:exported="false" android:taskAffinity="com.nextvm.vt.p5.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P5$S00" android:process=":p5" android:exported="false" />
+        <service android:name=".stub.P5$S01" android:process=":p5" android:exported="false" />
+        <service android:name=".stub.P5$S02" android:process=":p5" android:exported="false" />
+        <provider android:name=".stub.P5$CP00" android:process=":p5" android:exported="false" android:authorities="com.nextvm.vt.p5.cp00" />
+        <provider android:name=".stub.P5$CP01" android:process=":p5" android:exported="false" android:authorities="com.nextvm.vt.p5.cp01" />
+        <receiver android:name=".stub.P5$R00" android:process=":p5" android:exported="false" />
+
+        <!-- SLOT 6 -->
+        <activity android:name=".stub.P6$Standard00" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P6$Standard01" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P6$Standard02" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P6$SingleTop00" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P6$SingleTask00" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P6$SingleInstance00" android:process=":p6" android:exported="false" android:taskAffinity="com.nextvm.vt.p6.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P6$S00" android:process=":p6" android:exported="false" />
+        <service android:name=".stub.P6$S01" android:process=":p6" android:exported="false" />
+        <service android:name=".stub.P6$S02" android:process=":p6" android:exported="false" />
+        <provider android:name=".stub.P6$CP00" android:process=":p6" android:exported="false" android:authorities="com.nextvm.vt.p6.cp00" />
+        <provider android:name=".stub.P6$CP01" android:process=":p6" android:exported="false" android:authorities="com.nextvm.vt.p6.cp01" />
+        <receiver android:name=".stub.P6$R00" android:process=":p6" android:exported="false" />
+
+        <!-- SLOT 7 -->
+        <activity android:name=".stub.P7$Standard00" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P7$Standard01" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P7$Standard02" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P7$SingleTop00" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P7$SingleTask00" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P7$SingleInstance00" android:process=":p7" android:exported="false" android:taskAffinity="com.nextvm.vt.p7.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P7$S00" android:process=":p7" android:exported="false" />
+        <service android:name=".stub.P7$S01" android:process=":p7" android:exported="false" />
+        <service android:name=".stub.P7$S02" android:process=":p7" android:exported="false" />
+        <provider android:name=".stub.P7$CP00" android:process=":p7" android:exported="false" android:authorities="com.nextvm.vt.p7.cp00" />
+        <provider android:name=".stub.P7$CP01" android:process=":p7" android:exported="false" android:authorities="com.nextvm.vt.p7.cp01" />
+        <receiver android:name=".stub.P7$R00" android:process=":p7" android:exported="false" />
+
+        <!-- SLOT 8 -->
+        <activity android:name=".stub.P8$Standard00" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P8$Standard01" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P8$Standard02" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P8$SingleTop00" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P8$SingleTask00" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P8$SingleInstance00" android:process=":p8" android:exported="false" android:taskAffinity="com.nextvm.vt.p8.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P8$S00" android:process=":p8" android:exported="false" />
+        <service android:name=".stub.P8$S01" android:process=":p8" android:exported="false" />
+        <service android:name=".stub.P8$S02" android:process=":p8" android:exported="false" />
+        <provider android:name=".stub.P8$CP00" android:process=":p8" android:exported="false" android:authorities="com.nextvm.vt.p8.cp00" />
+        <provider android:name=".stub.P8$CP01" android:process=":p8" android:exported="false" android:authorities="com.nextvm.vt.p8.cp01" />
+        <receiver android:name=".stub.P8$R00" android:process=":p8" android:exported="false" />
+
+        <!-- SLOT 9 -->
+        <activity android:name=".stub.P9$Standard00" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.s00" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P9$Standard01" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.s01" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P9$Standard02" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.s02" android:launchMode="standard" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P9$SingleTop00" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.st00" android:launchMode="singleTop" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P9$SingleTask00" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.stk00" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".stub.P9$SingleInstance00" android:process=":p9" android:exported="false" android:taskAffinity="com.nextvm.vt.p9.si00" android:launchMode="singleInstance" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density|colorMode" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name=".stub.P9$S00" android:process=":p9" android:exported="false" />
+        <service android:name=".stub.P9$S01" android:process=":p9" android:exported="false" />
+        <service android:name=".stub.P9$S02" android:process=":p9" android:exported="false" />
+        <provider android:name=".stub.P9$CP00" android:process=":p9" android:exported="false" android:authorities="com.nextvm.vt.p9.cp00" />
+        <provider android:name=".stub.P9$CP01" android:process=":p9" android:exported="false" android:authorities="com.nextvm.vt.p9.cp01" />
+        <receiver android:name=".stub.P9$R00" android:process=":p9" android:exported="false" />
+
+    </application>
+
+</manifest>
