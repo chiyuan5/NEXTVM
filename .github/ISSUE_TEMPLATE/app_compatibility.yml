@@ -1,0 +1,69 @@
+name: App Compatibility Report
+description: Report an app that doesn't work correctly in NEXTVM
+title: "[Compat]: "
+labels: ["compatibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve app compatibility by reporting apps that don't work.
+
+  - type: input
+    id: app_name
+    attributes:
+      label: App Name
+      placeholder: "WhatsApp"
+    validations:
+      required: true
+
+  - type: input
+    id: package
+    attributes:
+      label: Package Name
+      placeholder: "com.whatsapp"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App Version
+      placeholder: "2.24.1.6"
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device & Android Version
+      placeholder: "Samsung S24, Android 15"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - App won't install
+        - App crashes on launch
+        - App launches but major features broken
+        - Minor issues / visual glitches
+        - Works perfectly (reporting success)
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What Happens
+      description: "Describe what goes wrong"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash Log / Logcat
+      description: "Any relevant logs"
+      render: shell

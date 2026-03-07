@@ -87,6 +87,7 @@ BUILD_PROGRESS.md
 
 # AI assistant instructions (keep private)
 .github/copilot-instructions.md
+.github/copilot.data.migration.ask2agent.xml
 
 # Feature planning files
 *.planning.md
@@ -102,9 +103,6 @@ logcat.txt
 .cxx/
 obj/
 **/.cxx/
-
-# Entire .github folder (copilot configs etc.)
-.github/
 
 # Batch scripts and temp build files
 CLEAN_AND_BUILD.bat
