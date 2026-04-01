@@ -1,0 +1,49 @@
+name: Build NEXTVM Android16
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取源码
+        uses: actions/checkout@v4
+
+      - name: 配置 JDK17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 配置 Android SDK & NDK
+        uses: android-actions/setup-android@v3
+        with:
+          ndk-version: 25.1.8937391
+          api-level: 35  # Android 16
+
+      - name: 授权 Gradle 执行
+        run: chmod +x gradlew
+
+      - name: 编译 Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: 编译 Release APK
+        run: ./gradlew assembleRelease
+
+      - name: 上传 Debug 产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXTVM-Debug-Android16
+          path: app/build/outputs/apk/debug/*.apk
+
+      - name: 上传 Release 产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXTVM-Release-Android16
+          path: app/build/outputs/apk/release/*.apk
