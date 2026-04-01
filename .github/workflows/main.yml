@@ -1,49 +1,66 @@
-name: Build NEXTVM Android16
-
+name: Build NEXTVM Fix
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch: # 支持手动触发
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 拉取源码
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 配置 JDK17
+      - name: Set JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: temurin
           cache: gradle
 
-      - name: 配置 Android SDK & NDK
+      # 修复安卓SDK+精准NDK，适配Android16(API35)
+      - name: Setup Android SDK & NDK
         uses: android-actions/setup-android@v3
         with:
+          api-level: 35
           ndk-version: 25.1.8937391
-          api-level: 35  # Android 16
 
-      - name: 授权 Gradle 执行
-        run: chmod +x gradlew
+      # 关键：清理错误JVM引号、授权脚本
+      - name: Fix gradle JVM args & permission
+        run: |
+          sed -i 's/-Xmx64m"//g' gradlew
+          sed -i 's/"-Xmx64m//g' gradlew
+          chmod +x gradlew
+          rm -f ~/.gradle/gradle.properties
 
-      - name: 编译 Debug APK
-        run: ./gradlew assembleDebug
+      # 缓存依赖，防止内存溢出+加速编译
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
-      - name: 编译 Release APK
-        run: ./gradlew assembleRelease
+      # 加固内存参数编译
+      - name: Assemble Debug
+        env:
+          GRADLE_OPTS: "-Xmx2048m -Dorg.gradle.daemon=false"
+        run: ./gradlew clean assembleDebug --no-daemon
 
-      - name: 上传 Debug 产物
+      - name: Assemble Release
+        env:
+          GRADLE_OPTS: "-Xmx2048m -Dorg.gradle.daemon=false"
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NEXTVM-Debug-Android16
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/
 
-      - name: 上传 Release 产物
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
           name: NEXTVM-Release-Android16
-          path: app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/release/
